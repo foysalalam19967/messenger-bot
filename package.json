@@ -1,0 +1,14 @@
+{
+  "name": "isratsworldbot",
+  "version": "1.0.0",
+  "description": "Messenger auto-reply bot for Israt's World Facebook Page",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5"
+  }
+}
