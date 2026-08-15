@@ -99,6 +99,11 @@ app.get("/", (req, res) => {
   res.send("Israt's World Messenger Bot is running ✅");
 });
 
+// Meta App Review-এর জন্য প্রয়োজনীয় Privacy Policy পেজ
+app.get("/privacy", (req, res) => {
+  res.sendFile(__dirname + "/privacy.html");
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
