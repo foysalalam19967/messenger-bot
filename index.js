@@ -12,12 +12,89 @@ app.use(express.json());
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
-// ==== Keyword অনুযায়ী রিপ্লাই লিস্ট (এখানে এডিট করে নতুন keyword/reply যোগ করতে পারবে) ====
+// ==== Keyword অনুযায়ী রিপ্লাই লিস্ট ====
 const replies = [
+  // ==== গ্রিটিং ====
   {
-    keywords: ["hi", "hello", "হাই", "হ্যালো"],
+    keywords: ["hi", "hello", "হাই", "হ্যালো", "আসসালামু আলাইকুম", "assalamu alaikum"],
     reply: "হ্যালো! Israt's World-এ স্বাগতম 😊 আপনাকে কীভাবে সাহায্য করতে পারি?",
   },
+
+  // ==== ধন্যবাদ ====
+  {
+    keywords: ["ধন্যবাদ", "thanks", "thank you"],
+    reply: "আপনাকেও ধন্যবাদ 😊 আবার প্রয়োজনে মেসেজ করবেন।",
+  },
+
+  // ==== প্রোডাক্ট লিস্ট (কী কী আছে) ====
+  {
+    keywords: ["কি কি পণ্য", "কি কি প্রোডাক্ট", "কি কি আছে", "কি পাওয়া যায়"],
+    reply:
+      "স্যার, আমাদের কাছে আছে:\n- ৬ হাতের জামস শাল\n- ৫ হাতের জামস ও লেডিস শাল\n- খাদি পাঞ্জাবি\n- টাঙ্গাইল শাড়ি\n- থ্রি-পিস\n\nস্যার আপনি কোনটা নিতে চান?",
+  },
+
+  // ==== ছবি চাওয়া (সাধারণ) ====
+  {
+    keywords: ["ছবি দিন", "ছবি পাঠান", "picture din", "picture pathan", "cobi din", "cobi pathan"],
+    reply: "স্যার একটু অপেক্ষা করুন, ছবিগুলো পাঠাচ্ছি।",
+  },
+
+  // ==== শালের ছবি ====
+  {
+    keywords: ["শালের ছবি", "shawler cobi", "shal er picture"],
+    reply: "স্যার একটু অপেক্ষা করুন, শালের ছবিগুলো পাঠাচ্ছি।",
+  },
+
+  // ==== মেয়েদের শাল ====
+  {
+    keywords: ["মেয়েদের শাল", "লেডিস শাল", "ladies shawl", "mayder shawl"],
+    reply: "হ্যাঁ স্যার, আমাদের কাছে মেয়েদের শাল আছে। এখনই ছবিগুলো পাঠাচ্ছি।",
+  },
+
+  // ==== শালের সাইজ ও ওজন ====
+  {
+    keywords: ["শালের সাইজ", "shawl size", "শালের মাপ", "শালের ওজন", "shawl ojon", "shawl weight"],
+    reply:
+      "শালের ২ সাইজ পাওয়া যায়:\n৬ হাত লম্বা x ২.৫ হাত চওড়া — ওজন ৬৫০+ গ্রাম\n৫ হাত x ২ হাত — ওজন ৩৫০-৫০০ গ্রাম",
+  },
+
+  // ==== পাঞ্জাবির সাইজ ====
+  {
+    keywords: ["পাঞ্জাবির সাইজ", "panjabi size", "পাঞ্জাবির মাপ"],
+    reply:
+      "খাদি পাঞ্জাবির সাইজ: ৩৮, ৪০, ৪২, ৪৪, ৪৬ (স্লিমফিট)। বেবি সাইজও পাওয়া যায়।",
+  },
+
+  // ==== শালের মান (নির্দিষ্ট) ====
+  {
+    keywords: [
+      "শালের মান",
+      "শাল ভালো",
+      "শালে রং",
+      "শাল গুটলি",
+      "shawl quality",
+      "shawl man",
+      "shal man",
+    ],
+    reply:
+      "স্যার নিশ্চিন্তে থাকুন, আমাদের শাল ১০০% ভালো মানের অরিজিনাল উল সুতায় তাঁতে বুনন করে তৈরি। রং, আঁশ বা গুটলি ওঠার কোনো সমস্যা নেই। ওয়াশ করা সুতায় বুনন করা, তাই সফট ও আরামদায়ক হবে।",
+  },
+
+  // ==== পাঞ্জাবির মান (নির্দিষ্ট) ====
+  {
+    keywords: ["পাঞ্জাবির মান", "পাঞ্জাবি ভালো", "panjabi quality", "panjabi man", "খাদির মান"],
+    reply:
+      "স্যার নিশ্চিন্তে থাকুন, আমাদের খাদি পাঞ্জাবি ১০০% কটন কাপড়ে তৈরি, রং ওঠার কোনো সমস্যা নেই, পরে আরামদায়ক লাগবে।",
+  },
+
+  // ==== কাপড়ের মান (শাড়ি/থ্রি-পিস) ====
+  {
+    keywords: ["কাপড় ভালো", "রং উঠবে", "মান কেমন", "quality kemon", "কাপড়ের মান"],
+    reply:
+      "স্যার নিশ্চিন্তে থাকুন, আমাদের শাড়ি ও থ্রি-পিস ১০০% কটন কাপড়ে তৈরি, রং ওঠার কোনো সমস্যা নেই।",
+  },
+
+  // ==== প্রোডাক্টের দাম (নির্দিষ্ট) ====
   {
     keywords: ["শাল", "shawl"],
     reply:
@@ -37,100 +114,8 @@ const replies = [
     reply:
       "থ্রি-পিস:\nবাটিক থ্রি-পিস: ৭০০ টাকা\nকাজ করা (এমব্রয়ডারি) থ্রি-পিস: ১০৫০ টাকা\n১০০% কটন কাপড়।",
   },
+
+  // ==== সাধারণ দাম জিজ্ঞাসা (প্রোডাক্টের নাম ছাড়া) ====
   {
-    keywords: ["price", "দাম", "কত"],
-    reply:
-      "আমাদের কাছে শাল, খাদি পাঞ্জাবি, টাঙ্গাইল শাড়ি ও থ্রি-পিস আছে। কোনটার দাম জানতে চান, নাম লিখে জানান।",
-  },
-  {
-    keywords: ["location", "ঠিকানা", "কোথায়"],
-    reply: "আমাদের লোকেশন: [তোমার ঠিকানা এখানে বসাবে]",
-  },
-];
-
-// কোনো keyword না মিললে এই ডিফল্ট রিপ্লাই যাবে
-const DEFAULT_REPLY =
-  "ধন্যবাদ মেসেজ করার জন্য! আমাদের টিম শীঘ্রই আপনার সাথে যোগাযোগ করবে।";
-
-// ইনকামিং মেসেজ টেক্সট চেক করে সঠিক রিপ্লাই খুঁজে বের করা
-function findReply(messageText) {
-  const text = messageText.toLowerCase();
-  for (const item of replies) {
-    if (item.keywords.some((kw) => text.includes(kw.toLowerCase()))) {
-      return item.reply;
-    }
-  }
-  return DEFAULT_REPLY;
-}
-
-// ==== ধাপ ১: Webhook Verification (Facebook এই GET request পাঠিয়ে চেক করে তোমার সার্ভার আসল কিনা) ====
-app.get("/webhook", (req, res) => {
-  const mode = req.query["hub.mode"];
-  const token = req.query["hub.verify_token"];
-  const challenge = req.query["hub.challenge"];
-
-  if (mode === "subscribe" && token === VERIFY_TOKEN) {
-    console.log("Webhook verified successfully!");
-    res.status(200).send(challenge);
-  } else {
-    res.sendStatus(403);
-  }
-});
-
-// ==== ধাপ ২: মেসেজ রিসিভ করা এবং অটো রিপ্লাই পাঠানো ====
-app.post("/webhook", async (req, res) => {
-  const body = req.body;
-
-  if (body.object === "page") {
-    for (const entry of body.entry) {
-      const webhookEvent = entry.messaging[0];
-      const senderId = webhookEvent.sender.id;
-
-      if (webhookEvent.message && webhookEvent.message.attachments) {
-        // ইউজার ছবি/ফাইল পাঠালে এই রিপ্লাই যাবে
-        await sendMessage(
-          senderId,
-          "অনুগ্রহ করে প্রোডাক্টের নাম, কালার অথবা কোড নম্বর লিখে জানান, আমরা দাম জানিয়ে দিচ্ছি 😊"
-        );
-      } else if (webhookEvent.message && webhookEvent.message.text) {
-        const messageText = webhookEvent.message.text;
-        const replyText = findReply(messageText);
-        await sendMessage(senderId, replyText);
-      }
-    }
-    res.status(200).send("EVENT_RECEIVED");
-  } else {
-    res.sendStatus(404);
-  }
-});
-
-// ==== Facebook Send API দিয়ে ইউজারকে রিপ্লাই পাঠানো ====
-async function sendMessage(senderId, text) {
-  try {
-    await axios.post(
-      `https://graph.facebook.com/v21.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
-      {
-        recipient: { id: senderId },
-        message: { text: text },
-      }
-    );
-    console.log(`Reply sent to ${senderId}: ${text}`);
-  } catch (error) {
-    console.error("Error sending message:", error.response?.data || error.message);
-  }
-}
-
-// সার্ভার সচল আছে কিনা চেক করার জন্য একটা সিম্পল রুট
-app.get("/", (req, res) => {
-  res.send("Israt's World Messenger Bot is running ✅");
-});
-
-// Meta App Review-এর জন্য প্রয়োজনীয় Privacy Policy পেজ
-app.get("/privacy", (req, res) => {
-  res.sendFile(__dirname + "/privacy.html");
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+    keywords: ["দাম কত", "price koto", "কত টাকা"],
+    reply: "স্যার কোন পণ্যের দাম জানতে
