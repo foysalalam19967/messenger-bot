@@ -13,6 +13,7 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 // ==== Keyword অনুযায়ী রিপ্লাই লিস্ট ====
+// গুরুত্বপূর্ণ: লিস্টের যেই আইটেম আগে আছে সেটা আগে চেক হয়, তাই বেশি নির্দিষ্ট keyword উপরে রাখা হয়েছে
 const replies = [
   // ==== গ্রিটিং ====
   {
@@ -65,6 +66,107 @@ const replies = [
       "খাদি পাঞ্জাবির সাইজ: ৩৮, ৪০, ৪২, ৪৪, ৪৬ (স্লিমফিট)। বেবি সাইজও পাওয়া যায়।",
   },
 
+  // ==== প্রোডাক্টের দাম (নির্দিষ্ট) ====
+  {
+    keywords: ["শাল", "shawl"],
+    reply:
+      "আমাদের দেশি উলের বুনন শাল আছে:\n৬ হাত শাল: ৭৫০-১১০০ টাকা\n৫ হাত শাল: ৪৫০-৬৫০ টাকা\nআঁশ ওঠে না, ১০০% ফিনিশিং কোয়ালিটি, নরম ও আরামদায়ক।",
+  },
+  {
+    keywords: ["খাদি", "পাঞ্জাবি", "panjabi"],
+    reply:
+      "খাদি পাঞ্জাবি:\nএক কালার (প্লেইন): ৪৫০ টাকা\nডিজাইন করা: ৫৫০-১১৫০ টাকা",
+  },
+  {
+    keywords: ["টাঙ্গাইল", "শাড়ি", "saree"],
+    reply: "টাঙ্গাইল শাড়ির দাম: ১০০০-১৫০০ টাকা",
+  },
+  {
+    keywords: ["থ্রি-পিস", "থ্রিপিস", "three piece", "3 piece"],
+    reply:
+      "থ্রি-পিস:\nবাটিক থ্রি-পিস: ৭০০ টাকা\nকাজ করা (এমব্রয়ডারি) থ্রি-পিস: ১০৫০ টাকা\n১০০% কটন কাপড়।",
+  },
+
+  // ==== সাধারণ দাম জিজ্ঞাসা (প্রোডাক্টের নাম ছাড়া) ====
+  {
+    keywords: ["দাম কত", "price koto", "কত টাকা"],
+    reply: "স্যার কোন পণ্যের দাম জানতে চান? কালার অথবা কোড নম্বর বলুন।",
+  },
+
+  // ==== লোকেশন ====
+  {
+    keywords: ["location", "লোকেশন", "ঠিকানা", "কোথায়"],
+    reply: "ঢাকার বাইরে, টাঙ্গাইল সদর — আমাদের লোকেশন।",
+  },
+
+  // ==== ডেলিভারি সময় ====
+  {
+    keywords: ["ডেলিভারি সময়", "delivery time", "কতদিনে পাব", "কয়দিনে পাব"],
+    reply: "ঢাকার ভেতরে ডেলিভারি সময় ১-২ দিন, ঢাকার বাইরে ৩-৫ দিন লাগে।",
+  },
+
+  // ==== ডেলিভারি চার্জ ====
+  {
+    keywords: ["ডেলিভারি চার্জ", "delivery charge", "ডেলিভারি খরচ"],
+    reply: "ঢাকার ভেতরে ডেলিভারি চার্জ ৮০ টাকা, ঢাকার বাইরে ১৩০ টাকা।",
+  },
+
+  // ==== ক্যাশ অন ডেলিভারি ====
+  {
+    keywords: ["cash on", "ক্যাশ অন", "cod", "হোম ডেলিভারি", "home delivery"],
+    reply: "হ্যাঁ স্যার, আমাদের ক্যাশ অন হোম ডেলিভারি আছে।",
+  },
+
+  // ==== পেমেন্ট পদ্ধতি ====
+  {
+    keywords: ["পেমেন্ট", "payment", "বিকাশ", "bkash", "নগদ", "nagad"],
+    reply: "আমরা শুধু ক্যাশ অন ডেলিভারিতে পেমেন্ট নিই — প্রোডাক্ট হাতে পেয়ে টাকা দিবেন।",
+  },
+
+  // ==== এক্সচেঞ্জ/রিটার্ন ====
+  {
+    keywords: ["এক্সচেঞ্জ", "রিটার্ন", "exchange", "return", "ফেরত"],
+    reply:
+      "হ্যাঁ স্যার, পণ্য পছন্দ না হলে এক্সচেঞ্জ করা যাবে। প্রোডাক্ট হাতে পাওয়ার ২ দিনের মধ্যে জানাতে হবে।",
+  },
+
+  // ==== অগ্রিম পেমেন্ট ====
+  {
+    keywords: ["অগ্রিম", "advance", "আগে টাকা", "advance payment"],
+    reply:
+      "না স্যার, কোনো অগ্রিম টাকা লাগবে না। হাতে পণ্য পেয়ে দেখে তারপর টাকা পরিশোধ করবেন। কোনো কারণে না নিলে বা পণ্য পছন্দ না হলে শুধু ডেলিভারি চার্জ পরিশোধ করে ফেরত দিতে পারবেন।",
+  },
+
+  // ==== পাইকারি/বাল্ক অর্ডার ====
+  {
+    keywords: ["পাইকারি", "বাল্ক", "wholesale", "bulk order", "বেশি পরিমাণ"],
+    reply:
+      "হ্যাঁ স্যার, পাইকারি/বাল্ক অর্ডার নেওয়া হয়। দাম আলোচনা সাপেক্ষে, বিস্তারিত জানতে ইনবক্সে জানান।",
+  },
+
+  // ==== কীভাবে অর্ডার করব ====
+  {
+    keywords: ["অর্ডার কিভাবে", "কিভাবে অর্ডার", "order kivabe", "order korbo"],
+    reply:
+      "অর্ডার করতে আপনার নাম, ঠিকানা এবং ফোন নম্বর ইনবক্সে জানান। আমরা দ্রুত কনফার্ম করে ডেলিভারি পাঠিয়ে দেব।",
+  },
+
+  // ==== ফোন নম্বর / সরাসরি কথা বলা ====
+  {
+    keywords: [
+      "নাম্বার দিন",
+      "নাম্বার দেন",
+      "ফোন নম্বর",
+      "phone number",
+      "কল করব",
+      "কল করতে",
+      "সরাসরি কথা",
+      "whatsapp",
+      "হোয়াটসঅ্যাপ",
+    ],
+    reply: "আমাদের নাম্বার: 01690158675 — কল অথবা WhatsApp দুটোতেই যোগাযোগ করতে পারবেন।",
+  },
+
   // ==== শালের মান (নির্দিষ্ট) ====
   {
     keywords: [
@@ -94,28 +196,108 @@ const replies = [
       "স্যার নিশ্চিন্তে থাকুন, আমাদের শাড়ি ও থ্রি-পিস ১০০% কটন কাপড়ে তৈরি, রং ওঠার কোনো সমস্যা নেই।",
   },
 
-  // ==== প্রোডাক্টের দাম (নির্দিষ্ট) ====
+  // ==== নতুন কালেকশন ====
   {
-    keywords: ["শাল", "shawl"],
-    reply:
-      "আমাদের দেশি উলের বুনন শাল আছে:\n৬ হাত শাল: ৭৫০-১১০০ টাকা\n৫ হাত শাল: ৪৫০-৬৫০ টাকা\nআঁশ ওঠে না, ১০০% ফিনিশিং কোয়ালিটি, নরম ও আরামদায়ক।",
-  },
-  {
-    keywords: ["খাদি", "পাঞ্জাবি", "panjabi"],
-    reply:
-      "খাদি পাঞ্জাবি:\nএক কালার (প্লেইন): ৪৫০ টাকা\nডিজাইন করা: ৫৫০-১১৫০ টাকা",
-  },
-  {
-    keywords: ["টাঙ্গাইল", "শাড়ি", "saree"],
-    reply: "টাঙ্গাইল শাড়ির দাম: ১০০০-১৫০০ টাকা",
-  },
-  {
-    keywords: ["থ্রি-পিস", "থ্রিপিস", "three piece", "3 piece"],
-    reply:
-      "থ্রি-পিস:\nবাটিক থ্রি-পিস: ৭০০ টাকা\nকাজ করা (এমব্রয়ডারি) থ্রি-পিস: ১০৫০ টাকা\n১০০% কটন কাপড়।",
+    keywords: ["নতুন কালেকশন", "নতুন প্রোডাক্ট", "new collection"],
+    reply: "প্রতি সপ্তাহে আমাদের নতুন কালেকশন আসে। পেজে ফলো রাখুন, নতুন আপডেট সবার আগে পেয়ে যাবেন 😊",
   },
 
-  // ==== সাধারণ দাম জিজ্ঞাসা (প্রোডাক্টের নাম ছাড়া) ====
+  // ==== দোকান/অফিসের সময় ====
   {
-    keywords: ["দাম কত", "price koto", "কত টাকা"],
-    reply: "স্যার কোন পণ্যের দাম জানতে
+    keywords: ["কখন খোলা", "অফিস সময়", "office time", "shop time", "কখন পাব আপনাদের"],
+    reply: "আমরা সবসময়ই (২৪ ঘণ্টা) খোলা থাকি, যেকোনো সময় মেসেজ করতে পারেন।",
+  },
+
+  // ==== বিদায়/ছোট রিপ্লাই ====
+  {
+    keywords: ["ওকে", "আচ্ছা", "ok", "okay", "thik ache", "ঠিক আছে"],
+    reply: "ধন্যবাদ, প্রয়োজনে আবার নক করবেন 😊",
+  },
+];
+
+// কোনো keyword না মিললে এই ডিফল্ট রিপ্লাই যাবে
+const DEFAULT_REPLY =
+  "ধন্যবাদ মেসেজ করার জন্য! আমাদের টিম শীঘ্রই আপনার সাথে যোগাযোগ করবে।";
+
+// ইনকামিং মেসেজ টেক্সট চেক করে সঠিক রিপ্লাই খুঁজে বের করা
+function findReply(messageText) {
+  const text = messageText.toLowerCase();
+  for (const item of replies) {
+    if (item.keywords.some((kw) => text.includes(kw.toLowerCase()))) {
+      return item.reply;
+    }
+  }
+  return DEFAULT_REPLY;
+}
+
+// ==== ধাপ ১: Webhook Verification ====
+app.get("/webhook", (req, res) => {
+  const mode = req.query["hub.mode"];
+  const token = req.query["hub.verify_token"];
+  const challenge = req.query["hub.challenge"];
+
+  if (mode === "subscribe" && token === VERIFY_TOKEN) {
+    console.log("Webhook verified successfully!");
+    res.status(200).send(challenge);
+  } else {
+    res.sendStatus(403);
+  }
+});
+
+// ==== ধাপ ২: মেসেজ রিসিভ করা এবং অটো রিপ্লাই পাঠানো ====
+app.post("/webhook", async (req, res) => {
+  const body = req.body;
+
+  if (body.object === "page") {
+    for (const entry of body.entry) {
+      const webhookEvent = entry.messaging[0];
+      const senderId = webhookEvent.sender.id;
+
+      if (webhookEvent.message && webhookEvent.message.attachments) {
+        // ইউজার ছবি/ফাইল পাঠালে এই রিপ্লাই যাবে
+        await sendMessage(
+          senderId,
+          "স্যার একটু অপেক্ষা করুন, আমাদের প্রতিনিধি এখনই প্রাইস জানিয়ে দিচ্ছে।"
+        );
+      } else if (webhookEvent.message && webhookEvent.message.text) {
+        const messageText = webhookEvent.message.text;
+        const replyText = findReply(messageText);
+        await sendMessage(senderId, replyText);
+      }
+    }
+    res.status(200).send("EVENT_RECEIVED");
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+// ==== Facebook Send API দিয়ে ইউজারকে রিপ্লাই পাঠানো ====
+async function sendMessage(senderId, text) {
+  try {
+    await axios.post(
+      `https://graph.facebook.com/v21.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+      {
+        recipient: { id: senderId },
+        message: { text: text },
+      }
+    );
+    console.log(`Reply sent to ${senderId}: ${text}`);
+  } catch (error) {
+    console.error("Error sending message:", error.response?.data || error.message);
+  }
+}
+
+// সার্ভার সচল আছে কিনা চেক করার জন্য একটা সিম্পল রুট
+app.get("/", (req, res) => {
+  res.send("Israt's World Messenger Bot is running ✅");
+});
+
+// Meta App Review-এর জন্য প্রয়োজনীয় Privacy Policy পেজ
+app.get("/privacy", (req, res) => {
+  res.sendFile(__dirname + "/privacy.html");
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
